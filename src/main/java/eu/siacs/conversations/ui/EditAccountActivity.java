@@ -629,9 +629,9 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			}
 		}
 		SharedPreferences preferences = getPreferences();
-		boolean useTor = Config.FORCE_ORBOT || preferences.getBoolean("use_tor", false);
-		this.mShowOptions = useTor || preferences.getBoolean("show_connection_options", false);
-		mHostname.setHint(useTor ? R.string.hostname_or_onion : R.string.hostname_example);
+		//boolean useTor = Config.FORCE_ORBOT || preferences.getBoolean("use_tor", false);
+		//this.mShowOptions = useTor || preferences.getBoolean("show_connection_options", false);
+		//mHostname.setHint(useTor ? R.string.hostname_or_onion : R.string.hostname_example);
 		this.mNamePort.setVisibility(mShowOptions ? View.VISIBLE : View.GONE);
 	}
 
@@ -737,11 +737,12 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	}
 
 	private void gotoChangePassword(String newPassword) {
-		final Intent changePasswordIntent = new Intent(this, ChangePasswordActivity.class);
+		Intent changePasswordIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://academics.gndec.ac.in/"));
+		/*final Intent changePasswordIntent = new Intent(this, ChangePasswordActivity.class);
 		changePasswordIntent.putExtra(EXTRA_ACCOUNT, mAccount.getJid().toString());
 		if (newPassword != null) {
 			changePasswordIntent.putExtra("password", newPassword);
-		}
+		}*/
 		startActivity(changePasswordIntent);
 	}
 

@@ -261,12 +261,12 @@ public class SettingsActivity extends XmppActivity implements
 				}
 				xmppConnectionService.refreshAllPresences();
 			}
-		} else if (name.equals("dont_trust_system_cas")) {
+		} /*else if (name.equals("dont_trust_system_cas")) {
 			xmppConnectionService.updateMemorizingTrustmanager();
 			reconnectAccounts();
 		} else if (name.equals("use_tor")) {
 			reconnectAccounts();
-		}
+		}*/
 
 	}
 

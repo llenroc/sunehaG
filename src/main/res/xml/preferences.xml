@@ -156,6 +156,18 @@
             android:summary="@string/pref_show_dynamic_tags_summary"
             android:title="@string/pref_show_dynamic_tags"/>
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_input_options">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="enter_is_send"
+            android:summary="@string/pref_enter_is_send_summary"
+            android:title="@string/pref_enter_is_send"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="display_enter_key"
+            android:summary="@string/pref_display_enter_key_summary"
+            android:title="@string/pref_display_enter_key"/>
+    </PreferenceCategory>
     <PreferenceCategory
         android:key="advanced"
         android:title="@string/pref_advanced_options">
@@ -188,6 +200,7 @@
                     android:title="@string/pref_delete_omemo_identities"
                     android:summary="@string/pref_delete_omemo_identities_summary"/>
             </PreferenceCategory>
+            <!--
             <PreferenceCategory
                 android:key="connection_options"
                 android:title="@string/pref_connection_options">
@@ -202,18 +215,7 @@
                     android:summary="@string/pref_show_connection_options_summary"
                     android:title="@string/pref_show_connection_options"/>
             </PreferenceCategory>
-            <PreferenceCategory android:title="@string/pref_input_options">
-                <CheckBoxPreference
-                    android:defaultValue="false"
-                    android:key="enter_is_send"
-                    android:summary="@string/pref_enter_is_send_summary"
-                    android:title="@string/pref_enter_is_send"/>
-                <CheckBoxPreference
-                    android:defaultValue="false"
-                    android:key="display_enter_key"
-                    android:summary="@string/pref_display_enter_key_summary"
-                    android:title="@string/pref_display_enter_key"/>
-            </PreferenceCategory>
+            -->
             <PreferenceCategory android:title="@string/pref_presence_settings">
                 <CheckBoxPreference
                     android:defaultValue="false"

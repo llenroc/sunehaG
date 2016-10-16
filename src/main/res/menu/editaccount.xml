@@ -21,14 +21,14 @@
         android:showAsAction="never"
         android:title="@string/action_renew_certificate"
         android:visible="false"/>
-
     <item
         android:id="@+id/action_server_info_show_more"
         android:checkable="true"
         android:checked="false"
         android:showAsAction="never"
-        android:title="@string/server_info_show_more"/>
-
+        android:title="@string/server_info_show_more"
+         android:visible="false"
+         />
     <item
         android:id="@+id/action_mam_prefs"
         android:title="@string/mam_prefs"/>
