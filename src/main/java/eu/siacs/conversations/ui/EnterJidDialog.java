@@ -98,7 +98,8 @@ public class EnterJidDialog {
 				}
 				final Jid contactJid;
 				try {
-					contactJid = Jid.fromString(jid.getText().toString());
+					contactJid = Jid.fromString(jid.getText().toString()+"@"+Config.DOMAIN_LOCK);
+
 				} catch (final InvalidJidException e) {
 					jid.setError(context.getString(R.string.invalid_jid));
 					return;

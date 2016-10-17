@@ -20,6 +20,7 @@ public final class Jid {
 	private final String localpart;
 	private final String domainpart;
 	private final String resourcepart;
+	private String username;
 
 	public String getLocalpart() {
 		return localpart;
@@ -47,6 +48,11 @@ public final class Jid {
 
 	public static Jid fromString(final String jid, final boolean safe) throws InvalidJidException {
 		return new Jid(jid, safe);
+	}
+
+	public static Jid fromString( final String jid,final String username)throws InvalidJidException {
+		//username=username;
+		return Jid.fromString(jid, false);
 	}
 
 	public static Jid fromParts(final String localpart,

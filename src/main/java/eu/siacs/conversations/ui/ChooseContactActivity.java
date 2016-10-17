@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -205,6 +206,7 @@ public class ChooseContactActivity extends AbstractSearchableListItemActivity {
 			getString(R.string.enter_contact), getString(R.string.select),
 			null, getIntent().getStringExtra(EXTRA_ACCOUNT), true
 		);
+
 
 		dialog.setOnEnterJidDialogPositiveListener(new EnterJidDialog.OnEnterJidDialogPositiveListener() {
 			@Override
