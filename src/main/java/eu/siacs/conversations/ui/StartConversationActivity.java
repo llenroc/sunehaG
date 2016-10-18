@@ -422,6 +422,8 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
                 } else {
                     contact.addOtrFingerprint(fingerprint);
                     xmppConnectionService.createContact(contact);
+                    contact.setServerName(contactJid.getUserName());
+                    xmppConnectionService.pushContactToServer(contact);
                     switchToConversation(contact);
                     return true;
                 }

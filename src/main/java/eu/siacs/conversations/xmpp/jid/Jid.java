@@ -22,6 +22,8 @@ public final class Jid {
 	private final String resourcepart;
 	private String username;
 
+    public void setUserName(String username){ this.username=username; return ;}
+    public String getUserName(){ return username;}
 	public String getLocalpart() {
 		return localpart;
 	}

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -51,6 +52,7 @@ public class EnterJidDialog {
 		jabberIdDesc.setText(R.string.account_settings_jabber_id);
 		final Spinner spinner = (Spinner) dialogView.findViewById(R.id.account);
 		final AutoCompleteTextView jid = (AutoCompleteTextView) dialogView.findViewById(R.id.jid);
+		final EditText username= (EditText)dialogView.findViewById(R.id.contact_id);
 		//jid.setAdapter(new KnownHostsAdapter(context, R.layout.simple_list_item, knownHosts));
 		if (prefilledJid != null) {
 			jid.append(prefilledJid);
@@ -99,7 +101,11 @@ public class EnterJidDialog {
 				final Jid contactJid;
 				try {
 					contactJid = Jid.fromString(jid.getText().toString()+"@"+Config.DOMAIN_LOCK);
-
+					if(username.getText().toString().trim().isEmpty()){
+						contactJid.setUserName(jid.getText().toString());
+					}else {
+						contactJid.setUserName(username.getText().toString());
+					}
 				} catch (final InvalidJidException e) {
 					jid.setError(context.getString(R.string.invalid_jid));
 					return;

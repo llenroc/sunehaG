@@ -40,4 +40,17 @@
         android:textColorHint="?attr/color_text_secondary"
         android:textSize="?attr/TextSizeBody" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/Contact_name"
+        android:textColor="?attr/color_text_primary"
+        android:textSize="?attr/TextSizeBody" />
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/contact_id"
+        />
+
 </LinearLayout>
