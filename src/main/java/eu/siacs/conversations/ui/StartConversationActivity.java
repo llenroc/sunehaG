@@ -443,7 +443,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
         final TextView jabberIdDesc = (TextView) dialogView.findViewById(R.id.jabber_id);
         jabberIdDesc.setText(R.string.conference_address);
         jid.setHint(R.string.conference_address_example);
-        jid.setAdapter(new KnownHostsAdapter(this, R.layout.simple_list_item, mKnownConferenceHosts));
+        //jid.setAdapter(new KnownHostsAdapter(this, R.layout.simple_list_item, mKnownConferenceHosts));
         if (prefilledJid != null) {
             jid.append(prefilledJid);
         }
@@ -470,7 +470,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
                         }
                         final Jid conferenceJid;
                         try {
-                            conferenceJid = Jid.fromString(jid.getText().toString());
+                            conferenceJid = Jid.fromString(jid.getText().toString()+"@conference."+Config.DOMAIN_LOCK);
                         } catch (final InvalidJidException e) {
                             jid.setError(getString(R.string.invalid_jid));
                             return;

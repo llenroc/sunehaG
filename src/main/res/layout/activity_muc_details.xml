@@ -23,6 +23,16 @@
 			android:padding="@dimen/infocard_padding">
 
 			<TextView
+				android:id="@+id/muc_jkey"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="16dp"
+				android:text="Room ID : "
+				android:textColor="?attr/color_text_primary"
+				android:textSize="?attr/TextSizeHeadline"
+				android:textStyle="bold"/>
+
+			<TextView
 				android:id="@+id/muc_jabberid"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -30,7 +40,7 @@
 				android:text="@string/account_settings_example_jabber_id"
 				android:textColor="?attr/color_text_primary"
 				android:textSize="?attr/TextSizeHeadline"
-				android:textStyle="bold"/>
+				/>
 
 			<RelativeLayout
 				android:layout_width="fill_parent"

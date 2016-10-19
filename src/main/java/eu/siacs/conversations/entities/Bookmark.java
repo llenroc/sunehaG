@@ -66,7 +66,7 @@ public class Bookmark extends Element implements ListItem {
 	public String getDisplayJid() {
 		Jid jid = getJid();
 		if (jid != null) {
-			return jid.toString();
+			return "ROOM ID: "+jid.getLocalpart().toString();
 		} else {
 			return getAttribute("jid"); //fallback if jid wasn't parsable
 		}
