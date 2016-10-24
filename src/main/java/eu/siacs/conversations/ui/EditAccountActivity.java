@@ -119,7 +119,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			final String passwordConfirm = mPasswordConfirm.getText().toString();
 
 			if (!mInitMode && passwordChangedInMagicCreateMode()) {
-				gotoChangePassword(password);
+				//	gotoChangePassword(password);
 				return;
 			}
 			if (mInitMode && mAccount != null) {
@@ -553,15 +553,16 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		final MenuItem renewCertificate = menu.findItem(R.id.action_renew_certificate);
 		final MenuItem mamPrefs = menu.findItem(R.id.action_mam_prefs);
 		final MenuItem changePresence = menu.findItem(R.id.action_change_presence);
+
 		renewCertificate.setVisible(mAccount != null && mAccount.getPrivateKeyAlias() != null);
 
 		if (mAccount != null && mAccount.isOnlineAndConnected()) {
 			if (!mAccount.getXmppConnection().getFeatures().blocking()) {
 				showBlocklist.setVisible(false);
 			}
-			if (!mAccount.getXmppConnection().getFeatures().register()) {
-				changePassword.setVisible(false);
-			}
+			//if (!mAccount.getXmppConnection().getFeatures().register()) {
+			//	changePassword.setVisible(false);
+			//}
 			mamPrefs.setVisible(mAccount.getXmppConnection().getFeatures().mam());
 			Set<Integer> otherDevices = mAccount.getAxolotlService().getOwnDeviceIds();
 			if (otherDevices == null || otherDevices.isEmpty() || !Config.supportOmemo()) {
@@ -711,7 +712,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				changeMoreTableVisibility(!item.isChecked());
 				break;
 			case R.id.action_change_password_on_server:
-				gotoChangePassword(null);
+				gotoLink("http://ldap.gndec.ac.in/");
 				break;
 			case R.id.action_mam_prefs:
 				editMamPrefs();
@@ -736,8 +737,8 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 		mMoreTable.setVisibility(visible ? View.VISIBLE : View.GONE);
 	}
 
-	private void gotoChangePassword(String newPassword) {
-		Intent changePasswordIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://academics.gndec.ac.in/"));
+	private void gotoLink (String newPassword) {
+		Intent changePasswordIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(newPassword));
 		/*final Intent changePasswordIntent = new Intent(this, ChangePasswordActivity.class);
 		changePasswordIntent.putExtra(EXTRA_ACCOUNT, mAccount.getJid().toString());
 		if (newPassword != null) {

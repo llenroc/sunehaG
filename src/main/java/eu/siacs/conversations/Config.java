@@ -8,9 +8,9 @@ public final class Config {
 
 
 	private static final int UNENCRYPTED = 1;
-	private static final int OPENPGP = 2;
+	private static final int OPENPGP = 0;
 	private static final int OTR = 4;
-	private static final int OMEMO = 8;
+	private static final int OMEMO = 0;
 
 	private static final int ENCRYPTION_MASK = UNENCRYPTED | OPENPGP | OTR | OMEMO;
 
@@ -34,7 +34,7 @@ public final class Config {
 		return (ENCRYPTION_MASK & (ENCRYPTION_MASK - 1)) != 0;
 	}
 
-	public static final String LOGTAG = "Gnenger";
+	public static final String LOGTAG = "SunehaG";
 
 	public static final String BUG_REPORTS = "bugs@lab.gdy.club";
 

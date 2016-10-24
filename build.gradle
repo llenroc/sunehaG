@@ -56,7 +56,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 24
         versionCode 179
-        versionName "1.14.6"
+        versionName "0.5"
         archivesBaseName += "-$versionName"
         applicationId "eu.siacs.conversations"
     }
