@@ -1,4 +1,4 @@
-package eu.siacs.conversations.services;
+package in.gndec.sunehag.services;
 
 import android.content.Intent;
 

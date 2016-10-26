@@ -25,7 +25,7 @@
             android:title="@string/pref_confirm_messages"/>
 
         <CheckBoxPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:key="chat_states"
             android:summary="@string/pref_chat_states_summary"
             android:title="@string/pref_chat_states"/>
@@ -70,13 +70,13 @@
                 android:key="enable_quiet_hours"
                 android:summary="@string/pref_quiet_hours_summary"
                 android:title="@string/title_pref_enable_quiet_hours"/>
-            <eu.siacs.conversations.ui.TimePreference
+            <in.gndec.sunehag.ui.TimePreference
                 android:dependency="enable_quiet_hours"
                 android:key="quiet_hours_start"
                 android:negativeButtonText="@string/cancel"
                 android:positiveButtonText="@string/set"
                 android:title="@string/title_pref_quiet_hours_start_time"/>
-            <eu.siacs.conversations.ui.TimePreference
+            <in.gndec.sunehag.ui.TimePreference
                 android:dependency="enable_quiet_hours"
                 android:key="quiet_hours_end"
                 android:negativeButtonText="@string/cancel"
@@ -138,7 +138,7 @@
             android:summary="@string/pref_use_larger_font_summary"
             android:title="@string/pref_use_larger_font"/>
         <CheckBoxPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:key="send_button_status"
             android:summary="@string/pref_use_send_button_to_indicate_status_summary"
             android:title="@string/pref_use_send_button_to_indicate_status"/>
@@ -151,7 +151,7 @@
             android:summary="@string/pref_quick_action_summary"
             android:title="@string/pref_quick_action"/>
         <CheckBoxPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:key="show_dynamic_tags"
             android:summary="@string/pref_show_dynamic_tags_summary"
             android:title="@string/pref_show_dynamic_tags"/>
@@ -250,7 +250,7 @@
                     android:summary="@string/pref_autojoin_summary"
                     />
                 <CheckBoxPreference
-                    android:defaultValue="false"
+                    android:defaultValue="true"
                     android:key="indicate_received"
                     android:summary="@string/pref_use_indicate_received_summary"
                     android:title="@string/pref_use_indicate_received"/>
@@ -272,7 +272,7 @@
             android:summary="@string/pref_never_send_crash_summary"
             android:title="@string/pref_never_send_crash"/>
     </PreferenceCategory>
-    <eu.siacs.conversations.ui.AboutPreference
+    <in.gndec.sunehag.ui.AboutPreference
         android:summary="@string/pref_about_conversations_summary"
         android:title="@string/title_activity_about"/>
 </PreferenceScreen>

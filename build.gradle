@@ -55,10 +55,10 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 24
-        versionCode 179
+        versionCode 1
         versionName "0.5"
         archivesBaseName += "-$versionName"
-        applicationId "eu.siacs.conversations"
+        applicationId "in.gndec.sunehag"
     }
 
     dexOptions {
