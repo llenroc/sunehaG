@@ -21,7 +21,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/gne"
         android:label="@string/app_name"
         android:theme="@style/ConversationsTheme"
         tools:replace="android:label">
@@ -46,9 +46,10 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <activity
             android:name="in.gndec.sunehag.ui.StartConversationActivity"
             android:label="@string/title_activity_start_conversation"
@@ -92,7 +93,13 @@
         <activity
             android:name="in.gndec.sunehag.ui.WelcomeActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTask"/>
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"></action>
+                <category android:name="android.intent.category.LAUNCHER"></category>
+            </intent-filter>
+        </activity>
+
         <activity
             android:name="in.gndec.sunehag.ui.MagicCreateActivity"
             android:label="@string/create_account"

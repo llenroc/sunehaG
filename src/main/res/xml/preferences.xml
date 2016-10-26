@@ -15,7 +15,8 @@
             android:entryValues="@array/resources"
             android:key="resource"
             android:summary="@string/pref_xmpp_resource_summary"
-            android:title="@string/pref_xmpp_resource"/>
+            android:title="@string/pref_xmpp_resource"
+            android:enabled="false"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_privacy">
         <CheckBoxPreference
@@ -198,7 +199,9 @@
                 <Preference
                     android:key="delete_omemo_identities"
                     android:title="@string/pref_delete_omemo_identities"
-                    android:summary="@string/pref_delete_omemo_identities_summary"/>
+                    android:summary="@string/pref_delete_omemo_identities_summary"
+                    android:enabled="false"/>
+
             </PreferenceCategory>
             <!--
             <PreferenceCategory
