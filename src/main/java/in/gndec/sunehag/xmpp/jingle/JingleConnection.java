@@ -36,6 +36,10 @@ import in.gndec.sunehag.xmpp.jingle.stanzas.JinglePacket;
 import in.gndec.sunehag.xmpp.jingle.stanzas.Reason;
 import in.gndec.sunehag.xmpp.stanzas.IqPacket;
 
+
+import in.gndec.sunehag.parser.IqParser;
+
+
 public class JingleConnection implements Transferable {
 
 	private JingleConnectionManager mJingleConnectionManager;
@@ -87,7 +91,7 @@ public class JingleConnection implements Transferable {
 		@Override
 		public void onIqPacketReceived(Account account, IqPacket packet) {
 			if (packet.getType() != IqPacket.TYPE.RESULT) {
-				fail();
+				fail(IqParser.extractErrorMessage(packet));
 			}
 		}
 	};
@@ -488,7 +492,7 @@ public class JingleConnection implements Transferable {
 						mJingleStatus = JINGLE_STATUS_INITIATED;
 						mXmppConnectionService.markMessage(message, Message.STATUS_OFFERED);
 					} else {
-						fail();
+						fail(IqParser.extractErrorMessage(packet));
 					}
 				}
 			});
@@ -619,6 +623,10 @@ public class JingleConnection implements Transferable {
 				if (cid != null) {
 					Log.d(Config.LOGTAG, "candidate used by counterpart:" + cid);
 					JingleCandidate candidate = getCandidate(cid);
+					if (candidate == null) {
+						Log.d(Config.LOGTAG,"could not find candidate with cid="+cid);
+						return false;
+					}
 					candidate.flagAsUsedByCounterpart();
 					this.receivedCandidate = true;
 					if ((mJingleStatus == JINGLE_STATUS_ACCEPTED)
@@ -846,6 +854,10 @@ public class JingleConnection implements Transferable {
 	}
 
 	private void fail() {
+		fail(null);
+	}
+
+	private void fail(String errorMessage) {
 		this.mJingleStatus = JINGLE_STATUS_FAILED;
 		this.disconnectSocks5Connections();
 		if (this.transport != null && this.transport instanceof JingleInbandTransport) {
@@ -862,7 +874,8 @@ public class JingleConnection implements Transferable {
 				this.mXmppConnectionService.updateConversationUi();
 			} else {
 				this.mXmppConnectionService.markMessage(this.message,
-						Message.STATUS_SEND_FAILED);
+						Message.STATUS_SEND_FAILED,
+						errorMessage);
 				this.message.setTransferable(null);
 			}
 		}
