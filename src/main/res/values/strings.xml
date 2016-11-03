@@ -11,7 +11,7 @@
 	<string name="action_add_account">Add account</string>
 	<string name="action_edit_contact">Edit name</string>
 	<string name="action_add_phone_book">Add to address book</string>
-	<string name="action_delete_contact">Delete from roster</string>
+	<string name="action_delete_contact">Delete from contacts</string>
 	<string name="action_block_contact">Block contact</string>
 	<string name="action_unblock_contact">Unblock contact</string>
 	<string name="action_block_domain">Block domain</string>
@@ -37,7 +37,7 @@
 	<string name="moderator">Moderator</string>
 	<string name="participant">Participant</string>
 	<string name="visitor">Visitor</string>
-	<string name="remove_contact_text">Would you like to remove %s from your roster? The conversation associated with this contact will not be removed.</string>
+	<string name="remove_contact_text">Would you like to remove %s from your contact list? The conversation associated with this contact will not be removed.</string>
 	<string name="block_contact_text">Would you like to block %s from sending you messages?</string>
 	<string name="unblock_contact_text">Would you like to unblock %s and allow them to send you messages?</string>
 	<string name="block_domain_text">Block all contacts from %s?</string>
@@ -67,7 +67,7 @@
 	<string name="problem_connecting_to_accounts">Unable to connect to multiple accounts</string>
 	<string name="touch_to_fix">Touch here to manage your accounts</string>
 	<string name="attach_file">Attach file</string>
-	<string name="not_in_roster">The contact is not in your roster. Would you like to add it?</string>
+	<string name="not_in_roster">The contact is not in your contact list. Would you like to add it?</string>
 	<string name="add_contact">Add contact</string>
 	<string name="send_failed">delivery failed</string>
 	<string name="send_rejected">rejected</string>
@@ -599,7 +599,7 @@
 	<string name="shared_text_with_x">Shared text with %s</string>
 	<string name="no_storage_permission">SunehaG need access to external storage</string>
 	<string name="sync_with_contacts">Synchronize with contacts</string>
-	<string name="sync_with_contacts_long">SunehaG wants to match your XMPP roster with your contacts to show their full names and avatars.\n\nSunehaG will only read your contacts and match them locally without uploading them to your server.\n\nYou will now be asked to grant permission to access your contacts.</string>
+	<string name="sync_with_contacts_long">SunehaG wants to match your XMPP contact list with your contacts to show their full names and avatars.\n\nSunehaG will only read your contacts and match them locally without uploading them to your server.\n\nYou will now be asked to grant permission to access your contacts.</string>
 	<string name="certificate_information">Certificate Information</string>
 	<string name="certificate_subject">Subject</string>
 	<string name="certificate_issuer">Issuer</string>
