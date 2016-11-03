@@ -87,6 +87,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 	private TextView mAxolotlFingerprint;
 	private TextView mOwnFingerprintDesc;
 	private TextView mAccountJidLabel;
+	private TextView forgotPassword;
 	private ImageView mAvatar;
 	private RelativeLayout mOtrFingerprintBox;
 	private RelativeLayout mAxolotlFingerprintBox;
@@ -460,13 +461,24 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			this.mSavedInstanceInit = savedInstanceState.getBoolean("initMode", false);
 		}
 		setContentView(R.layout.activity_edit_account);
+		this.forgotPassword = (TextView) findViewById(R.id.edit_account_forgot_password);
+		forgotPassword.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW);
+				browserIntent.setData(Uri.parse(Config.FORGOT_PASSWORD_URL));
+				startActivity(browserIntent);
+			}
+		});
 		this.mAccountJid = (AutoCompleteTextView) findViewById(R.id.account_jid);
 		this.mAccountJid.addTextChangedListener(this.mTextWatcher);
 		this.mAccountJidLabel = (TextView) findViewById(R.id.account_jid_label);
 		this.mPassword = (EditText) findViewById(R.id.account_password);
 		this.mPassword.addTextChangedListener(this.mTextWatcher);
 		this.mPasswordConfirm = (EditText) findViewById(R.id.account_password_confirm);
-		this.mAvatar = (ImageView) findViewById(R.id.avater);
+		this.mAvatar = (ImageView) findViewById(R.id.avatar);
+		this.mAvatar.setVisibility(View.VISIBLE);
+		this.mAvatar.setImageResource(R.drawable.gne);
 		this.mAvatar.setOnClickListener(this.mAvatarClickListener);
 		this.mRegisterNew = (CheckBox) findViewById(R.id.account_register_new);
 		this.mStats = (LinearLayout) findViewById(R.id.stats);
@@ -616,7 +628,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 					getActionBar().setTitle(getString(R.string.account_details));
 				}
 			} else {
-				this.mAvatar.setVisibility(View.GONE);
+				this.mAvatar.setVisibility(View.VISIBLE);
 				ActionBar ab = getActionBar();
 				if (ab != null) {
 					if (init && Config.MAGIC_CREATE_DOMAIN == null) {
@@ -710,7 +722,7 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 				changeMoreTableVisibility(!item.isChecked());
 				break;
 			case R.id.action_change_password_on_server:
-				gotoLink("http://ldap.gndec.ac.in/");
+				gotoLink(Config.CHANGE_PASSWORD_URL);
 				break;
 			case R.id.action_mam_prefs:
 				editMamPrefs();
@@ -783,7 +795,9 @@ public class EditAccountActivity extends XmppActivity implements OnAccountUpdate
 			this.mAvatar.setVisibility(View.VISIBLE);
 			this.mAvatar.setImageBitmap(avatarService().get(this.mAccount, getPixel(72)));
 		} else {
-			this.mAvatar.setVisibility(View.GONE);
+			this.mAvatar.setVisibility(View.VISIBLE);
+			this.mAvatar.setImageResource(R.drawable.gne);
+			//this.mAvatar.setVisibility(View.GONE);
 		}
 		if (this.mAccount.isOptionSet(Account.OPTION_REGISTER)) {
 			this.mRegisterNew.setVisibility(View.VISIBLE);
