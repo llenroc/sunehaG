@@ -34,19 +34,19 @@ public final class Config {
 		return (ENCRYPTION_MASK & (ENCRYPTION_MASK - 1)) != 0;
 	}
 
-	public static final String LOGTAG = "SunehaG";
+	public static final String LOGTAG = "sunehaG";
 	
 	//FIXME: Change "YOURHOSTNAME" to the domain name at which you want to run this app
 	public static final String BUG_REPORTS = "sunehag@YOURHOSTNAME";
 
 	//FIXME: Change "YOUR DOMAIN" to the domain name at which you want to run this app
-	public static final String DOMAIN_LOCK = "YOUR DOMAIN"; //only allow account creation for this domain
+	public static final String DOMAIN_LOCK = "YOUR DOMAIN"; //only allow account connection for this domain
 
 	//FIXME: Change "YOUR PASSWORD RECOVERY PAGE" to the domain name at which you want to run this app
 	public static final String FORGOT_PASSWORD_URL = "http://YOUR PASSWORD RECOVERY PAGE"; //URL to password recovery page (web page)
 
 	//FIXME: Change "YOUR CHANGE PASSWORD PAGE" to the domain name at which you want to run this app
-	public static final String CHANGE_PASSWORD_URL = "http://YOUR CHANGE PASSWORD PAGE";
+	public static final String CHANGE_PASSWORD_URL = "http://YOUR CHANGE PASSWORD PAGE"; // URL to change password page (web page)
 	public static final String MAGIC_CREATE_DOMAIN = null;
 	public static final boolean DISALLOW_REGISTRATION_IN_UI = true; //hide the register checkbox
 
