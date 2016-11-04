@@ -34,7 +34,7 @@ public final class Config {
 		return (ENCRYPTION_MASK & (ENCRYPTION_MASK - 1)) != 0;
 	}
 
-	public static final String LOGTAG = "SunehaG";
+	public static final String LOGTAG = "sunehaG";
 	
 	//FIXME: Change "YOURHOSTNAME" to the domain name at which you want to run this app
 	public static final String BUG_REPORTS = "sunehag@YOURHOSTNAME";
