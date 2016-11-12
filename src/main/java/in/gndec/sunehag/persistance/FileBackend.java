@@ -152,13 +152,13 @@ public class FileBackend {
 	}
 
 	public static String getConversationsFileDirectory() {
-		return  Environment.getExternalStorageDirectory().getAbsolutePath()+"/Conversations/";
+		return  Environment.getExternalStorageDirectory().getAbsolutePath()+"/sunehaG/";
 	}
 
 	public static String getConversationsImageDirectory() {
 		return Environment.getExternalStoragePublicDirectory(
 				Environment.DIRECTORY_PICTURES).getAbsolutePath()
-			+ "/Conversations/";
+			+ "/sunehaG/";
 	}
 
 	public Bitmap resize(Bitmap originalBitmap, int size) {
