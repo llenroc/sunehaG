@@ -2,12 +2,12 @@
 
 sunehaG: sunehaG is an official android based open source Instant Messaging Application for GNDEC college
 
-##Origins
-SunehaG is a FORK of "[Conversations](https://github.com/siacs/Conversations)", an awesome XMPP client for android with great features.
-
 [![Google Play](/google-play-badge.png)](https://play.google.com/store/apps/details?id=in.gndec.sunehag)
 
 ![screenshots](https://raw.githubusercontent.com/siacs/Conversations/master/screenshots.png)
+
+##Origins
+SunehaG is a FORK of "[Conversations](https://github.com/siacs/Conversations)", an awesome XMPP client for android with great features.
 
 ## Design principles
 
