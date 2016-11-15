@@ -28,6 +28,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
@@ -438,6 +439,16 @@ public abstract class XmppActivity extends Activity {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 			PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
 			return !pm.isIgnoringBatteryOptimizations(getPackageName());
+		} else {
+			return false;
+		}
+	}
+
+	protected boolean isAffectedByDataSaver() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+			ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+			return cm.isActiveNetworkMetered()
+					&& cm.getRestrictBackgroundStatus() == ConnectivityManager.RESTRICT_BACKGROUND_STATUS_ENABLED;
 		} else {
 			return false;
 		}
@@ -1209,6 +1220,7 @@ public abstract class XmppActivity extends Activity {
 
 	protected void showQrCode() {
 		String uri = getShareableUri();
+		Log.d(Config.LOGTAG,"Uri in QR Code : "+uri);
 		if (uri!=null) {
 			Point size = new Point();
 			getWindowManager().getDefaultDisplay().getSize(size);
