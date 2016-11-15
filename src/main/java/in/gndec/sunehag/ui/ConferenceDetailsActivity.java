@@ -204,7 +204,9 @@ public class ConferenceDetailsActivity extends XmppActivity implements OnConvers
 
 		@Override
 		public void onValueEdited(String value) {
-			xmppConnectionService.pushSubjectToConference(mConversation,value);
+			if(!value.isEmpty()) {
+				xmppConnectionService.pushSubjectToConference(mConversation, value);
+			}
 		}
 	};
 

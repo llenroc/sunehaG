@@ -526,13 +526,16 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
                 if (!xmppConnectionServiceBound) {
                     return;
                 }
+                if( subject.getText().toString().trim().isEmpty()){
+                    return;
+                }
                 final Account account = getSelectedAccount(spinner);
                 if (account == null) {
                     return;
                 }
                 Intent intent = new Intent(getApplicationContext(), ChooseContactActivity.class);
                 intent.putExtra("multiple", true);
-                intent.putExtra("show_enter_jid", true);
+                intent.putExtra("show_enter_jid", false);
                 intent.putExtra("subject", subject.getText().toString());
                 intent.putExtra(EXTRA_ACCOUNT, account.getJid().toBareJid().toString());
                 intent.putExtra(ChooseContactActivity.EXTRA_TITLE_RES_ID, R.string.choose_participants);
