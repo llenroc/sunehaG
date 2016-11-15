@@ -62,20 +62,12 @@ experience better.
 
 ####Head of Development####
 
-    Dr. H.S Rai
+	Dr. H.S Rai
 
 Code Contributions
 
-(In order of appearance)
-
-   * [Amarjeet Kapoor (PRs)](https://github.com/amarjeetkapoor1)
-   * [Amitoj Singh (PRs)](https://github.com/amitojsingh)
-   * [Amritpal Singh (PRs)](https://github.com/amrit3701)
+   * [Amarjeet Kapoor](https://github.com/amarjeetkapoor1)
    * [Jugraj Singh (PRs)](https://github.com/jugrajsingh)
-   * [Parimal Paritosh (PRs)](https://github.com/ParimalParitosh)
-   * [Ranjeet (PRs)](https://github.com/Ranjeet123Kumar/)
-   * [Ranvir Singh (PRs)](https://github.com/singh1114)
-   * [Tamandeep Singh (PRs)](https://github.com/TamandeepSingh)
 
 ####Logo####
 
@@ -84,11 +76,11 @@ Code Contributions
 
 #### I found a bug
 
-Please report it to our [issue tracker][issues]. If your app crashes please
+Please report it to our [discussion form][discussion]. If your app crashes please
 provide a stack trace. If you are experiencing misbehavior please provide
 detailed steps to reproduce. Always mention whether you are running the latest
 Play Store version or the current HEAD. If you are having problems connecting to
 your XMPP server your file transfer doesn’t work as expected please always
 include a logcat debug output with your issue (see above).
 
-[issues]: https://ISSUE_URL
+[discussion]: https://ISSUE_URL
