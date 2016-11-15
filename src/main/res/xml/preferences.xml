@@ -221,11 +221,11 @@
             -->
             <PreferenceCategory android:title="@string/pref_presence_settings">
                 <CheckBoxPreference
-                    android:defaultValue="false"
+                    android:defaultValue="true"
                     android:key="manually_change_presence"
                     android:title="@string/pref_manually_change_presence"
                     android:summary="@string/pref_manually_change_presence_summary"
-                    android:disableDependentsState="true"/>
+                    android:disableDependentsState="false"/>
                 <CheckBoxPreference
                     android:defaultValue="false"
                     android:key="away_when_screen_off"

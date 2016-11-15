@@ -459,12 +459,12 @@ public class Conversation extends AbstractEntity implements Blockable, Comparabl
 					&& !bookmark.getBookmarkName().trim().isEmpty()) {
 				return bookmark.getBookmarkName().trim();
 			} else {
-				String generatedName = getMucOptions().createNameFromParticipants();
+				/*String generatedName = getMucOptions().createNameFromParticipants();
 				if (generatedName != null) {
 					return generatedName;
-				} else {
+				} else {*/
 					return getJid().getLocalpart();
-				}
+				//}
 			}
 		} else {
 			return this.getContact().getDisplayName();
