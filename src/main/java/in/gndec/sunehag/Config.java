@@ -40,7 +40,7 @@ public final class Config {
 	public static final String BUG_REPORTS = "sunehag@YOURHOSTNAME";
 
 	//FIXME: Change "YOUR DOMAIN" to the domain name at which you want to run this app
-	public static final String DOMAIN_LOCK = "lab.gdy.club"; //only allow account connection for this domain
+	public static final String DOMAIN_LOCK = "YOUR DOMAIN"; //only allow account connection for this domain
 
 	//FIXME: Change "YOUR PASSWORD RECOVERY PAGE" to the domain name at which you want to run this app
 	public static final String FORGOT_PASSWORD_URL = "http://YOUR PASSWORD RECOVERY PAGE"; //URL to password recovery page (web page)

@@ -10,7 +10,6 @@ import android.preference.PreferenceManager;
 
 public class StartupManager {
     SharedPreferences preferences;
-    SharedPreferences.Editor editor;
     Context context;
 
     int PRIVATE_MODE = 0;
@@ -24,8 +23,6 @@ public class StartupManager {
     }
 
     public void setFirstTimeLaunch(boolean isFirstTime){
-        //editor = preferences.edit();
-        //editor.putBoolean(IS_FIRST_TIME_LAUNCH, isFirstTime);
         preferences.edit().putBoolean(IS_FIRST_TIME_LAUNCH, isFirstTime).apply();
     }
 
