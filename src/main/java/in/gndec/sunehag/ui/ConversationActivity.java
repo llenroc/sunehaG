@@ -48,6 +48,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import de.timroes.android.listview.EnhancedListView;
 import in.gndec.sunehag.Config;
 import in.gndec.sunehag.R;
+import in.gndec.sunehag.StartupManager;
 import in.gndec.sunehag.crypto.axolotl.AxolotlService;
 import in.gndec.sunehag.crypto.axolotl.FingerprintStatus;
 import in.gndec.sunehag.entities.Account;
@@ -1186,6 +1187,7 @@ public class ConversationActivity extends XmppActivity
 				} else if (Config.MAGIC_CREATE_DOMAIN != null) {
 					startActivity(new Intent(this, WelcomeActivity.class));
 				} else {
+					new StartupManager(this).setFirstTimeLaunch(true);
 					Intent editAccount = new Intent(this, EditAccountActivity.class);
 					editAccount.putExtra("init",true);
 					startActivity(editAccount);
