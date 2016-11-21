@@ -399,8 +399,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
         EnterJidDialog dialog = new EnterJidDialog(
                 this, mKnownHosts, mActivatedAccounts,
                 getString(R.string.create_contact), getString(R.string.create),
-                prefilledJid, null, !invite.hasFingerprints());
-
+                prefilledJid, null, invite == null || !invite.hasFingerprints());
         dialog.setOnEnterJidDialogPositiveListener(new EnterJidDialog.OnEnterJidDialogPositiveListener() {
             @Override
             public boolean onEnterJidDialogPositive(Jid accountJid, Jid contactJid) throws EnterJidDialog.JidError {
@@ -417,10 +416,10 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
                 if (contact.showInRoster()) {
                     throw new EnterJidDialog.JidError(getString(R.string.contact_already_exists));
                 } else {
-                    //contact.addOtrFingerprint(fingerprint);
                     xmppConnectionService.createContact(contact);
-                    contact.setServerName(contactJid.getUserName());
-                    xmppConnectionService.pushContactToServer(contact);
+                    if (invite != null && invite.hasFingerprints()) {
+                        xmppConnectionService.verifyFingerprints(contact,invite.getFingerprints());
+                    }
                     switchToConversation(contact);
                     return true;
                 }
@@ -845,7 +844,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
 
     private boolean handleJid(Invite invite) {
         Account account = xmppConnectionService.findAccountByJid(invite.getJid());
-        if (account != null && invite.hasFingerprints()) {
+        if (account != null && !account.isOptionSet(Account.OPTION_DISABLED) && invite.hasFingerprints()) {
             if (xmppConnectionService.verifyFingerprints(account,invite.getFingerprints())) {
                 switchToAccount(account);
                 finish();

@@ -38,6 +38,7 @@ import in.gndec.sunehag.OmemoActivity;
 import in.gndec.sunehag.R;
 import in.gndec.sunehag.crypto.PgpEngine;
 import in.gndec.sunehag.crypto.axolotl.AxolotlService;
+import in.gndec.sunehag.crypto.axolotl.XmppAxolotlSession;
 import in.gndec.sunehag.entities.Account;
 import in.gndec.sunehag.entities.Contact;
 import in.gndec.sunehag.entities.ListItem;
@@ -445,9 +446,12 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 			}
 		}
 		if (Config.supportOmemo()) {
-			for (final String fingerprint : contact.getAccount().getAxolotlService().getFingerprintsForContact(contact)) {
-				boolean highlight = fingerprint.equals(messageFingerprint);
-				hasKeys |= addFingerprintRow(keys, contact.getAccount(), fingerprint, highlight);
+			for (final XmppAxolotlSession session : contact.getAccount().getAxolotlService().findSessionsForContact(contact)) {
+				if (!session.getTrust().isCompromised()) {
+					boolean highlight = session.getFingerprint().equals(messageFingerprint);
+					hasKeys = true;
+					addFingerprintRow(keys, session, highlight);
+				}
 			}
 		}
 		if (Config.supportOpenPgp() && contact.getPgpKeyId() != 0) {

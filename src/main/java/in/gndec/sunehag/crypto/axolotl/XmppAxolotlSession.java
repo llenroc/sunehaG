@@ -25,7 +25,7 @@ import java.util.Map;
 import in.gndec.sunehag.Config;
 import in.gndec.sunehag.entities.Account;
 
-public class XmppAxolotlSession {
+public class XmppAxolotlSession implements Comparable<XmppAxolotlSession> {
 	private final SessionCipher cipher;
 	private final SQLiteAxolotlStore sqLiteAxolotlStore;
 	private final AxolotlAddress remoteAddress;
@@ -134,5 +134,14 @@ public class XmppAxolotlSession {
 		} else {
 			return null;
 		}
+	}
+
+	public Account getAccount() {
+		return account;
+	}
+
+	@Override
+	public int compareTo(XmppAxolotlSession o) {
+		return getTrust().compareTo(o.getTrust());
 	}
 }
