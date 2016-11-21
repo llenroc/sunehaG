@@ -58,9 +58,9 @@ experience better.
 * [XEP-0363: HTTP File Upload](http://xmpp.org/extensions/xep-0363.html) allows you to share files in groups
   and with offline contacts.
 
-##Team##
+## Team
 
-####Head of Development####
+####Head of Development
 
 	Dr. H.S Rai
 
@@ -69,7 +69,7 @@ Code Contributions
    * [Amarjeet Kapoor](https://github.com/amarjeetkapoor1)
    * [Jugraj Singh (PRs)](https://github.com/jugrajsingh)
 
-####Logo####
+####Logo
 
    * [Amitoj Singh (Progress)](https://github.com/amitojsingh)
    * [Gauravjeet Singh (Original)](https://github.com/GauravjeetSingh)

@@ -65,6 +65,7 @@ import in.gndec.sunehag.R;
 import in.gndec.sunehag.crypto.PgpDecryptionService;
 import in.gndec.sunehag.crypto.PgpEngine;
 import in.gndec.sunehag.crypto.axolotl.AxolotlService;
+import in.gndec.sunehag.crypto.axolotl.FingerprintStatus;
 import in.gndec.sunehag.crypto.axolotl.XmppAxolotlMessage;
 import in.gndec.sunehag.entities.Account;
 import in.gndec.sunehag.entities.Blockable;
@@ -102,6 +103,7 @@ import in.gndec.sunehag.utils.PhoneHelper;
 import in.gndec.sunehag.utils.ReplacingSerialSingleThreadExecutor;
 import in.gndec.sunehag.utils.SerialSingleThreadExecutor;
 import in.gndec.sunehag.utils.Xmlns;
+import in.gndec.sunehag.utils.XmppUri;
 import in.gndec.sunehag.xml.Element;
 import in.gndec.sunehag.xmpp.OnBindListener;
 import in.gndec.sunehag.xmpp.OnContactStatusChanged;
@@ -969,6 +971,7 @@ public class XmppConnectionService extends Service {
 
 	private void logoutAndSave(boolean stop) {
 		int activeAccounts = 0;
+		databaseBackend.clearStartTimeCounter(); // regular swipes don't count towards restart counter
 		for (final Account account : accounts) {
 			if (account.getStatus() != Account.State.DISABLED) {
 				activeAccounts++;
@@ -987,13 +990,6 @@ public class XmppConnectionService extends Service {
 			Log.d(Config.LOGTAG, "good bye");
 			stopSelf();
 		}
-	}
-
-	private void cancelWakeUpCall(int requestCode) {
-		final AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-		final Intent intent = new Intent(this, EventReceiver.class);
-		intent.setAction("ping");
-		alarmManager.cancel(PendingIntent.getBroadcast(this, requestCode, intent, 0));
 	}
 
 	public void scheduleWakeUpCall(int seconds, int requestCode) {
@@ -3612,6 +3608,51 @@ public class XmppConnectionService extends Service {
 				databaseBackend.clearStartTimeCounter();
 			}
 		});
+	}
+
+	public void verifyFingerprints(Contact contact, List<XmppUri.Fingerprint> fingerprints) {
+		boolean needsRosterWrite = false;
+		final AxolotlService axolotlService = contact.getAccount().getAxolotlService();
+		for(XmppUri.Fingerprint fp : fingerprints) {
+			if (fp.type == XmppUri.FingerprintType.OTR) {
+				needsRosterWrite |= contact.addOtrFingerprint(fp.fingerprint);
+			} else if (fp.type == XmppUri.FingerprintType.OMEMO) {
+				String fingerprint = "05"+fp.fingerprint.replaceAll("\\s","");
+				FingerprintStatus fingerprintStatus = axolotlService.getFingerprintTrust(fingerprint);
+				if (fingerprintStatus != null) {
+					if (!fingerprintStatus.isVerified()) {
+						axolotlService.setFingerprintTrust(fingerprint,fingerprintStatus.toVerified());
+					}
+				} else {
+					axolotlService.preVerifyFingerprint(contact,fingerprint);
+				}
+			}
+		}
+		if (needsRosterWrite) {
+			syncRosterToDisk(contact.getAccount());
+		}
+	}
+
+	public boolean verifyFingerprints(Account account, List<XmppUri.Fingerprint> fingerprints) {
+		final AxolotlService axolotlService = account.getAxolotlService();
+		boolean verifiedSomething = false;
+		for(XmppUri.Fingerprint fp : fingerprints) {
+			if (fp.type == XmppUri.FingerprintType.OMEMO) {
+				String fingerprint = "05"+fp.fingerprint.replaceAll("\\s","");
+				Log.d(Config.LOGTAG,"trying to verify own fp="+fingerprint);
+				FingerprintStatus fingerprintStatus = axolotlService.getFingerprintTrust(fingerprint);
+				if (fingerprintStatus != null) {
+					if (!fingerprintStatus.isVerified()) {
+						axolotlService.setFingerprintTrust(fingerprint,fingerprintStatus.toVerified());
+						verifiedSomething = true;
+					}
+				} else {
+					axolotlService.preVerifyFingerprint(account,fingerprint);
+					verifiedSomething = true;
+				}
+			}
+		}
+		return verifiedSomething;
 	}
 
 	public interface OnMamPreferencesFetched {

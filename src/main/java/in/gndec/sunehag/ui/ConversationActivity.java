@@ -49,7 +49,7 @@ import de.timroes.android.listview.EnhancedListView;
 import in.gndec.sunehag.Config;
 import in.gndec.sunehag.R;
 import in.gndec.sunehag.crypto.axolotl.AxolotlService;
-import in.gndec.sunehag.crypto.axolotl.XmppAxolotlSession;
+import in.gndec.sunehag.crypto.axolotl.FingerprintStatus;
 import in.gndec.sunehag.entities.Account;
 import in.gndec.sunehag.entities.Blockable;
 import in.gndec.sunehag.entities.Contact;
@@ -67,7 +67,6 @@ import in.gndec.sunehag.xmpp.OnUpdateBlocklist;
 import in.gndec.sunehag.xmpp.XmppConnection;
 import in.gndec.sunehag.xmpp.jid.InvalidJidException;
 import in.gndec.sunehag.xmpp.jid.Jid;
-
 
 public class ConversationActivity extends XmppActivity
 	implements OnAccountUpdate, OnConversationUpdate, OnRosterUpdate, OnUpdateBlocklist, XmppConnectionService.OnShowErrorToast {
@@ -1678,8 +1677,8 @@ public class ConversationActivity extends XmppActivity
 		AxolotlService axolotlService = mSelectedConversation.getAccount().getAxolotlService();
 		final List<Jid> targets = axolotlService.getCryptoTargets(mSelectedConversation);
 		boolean hasUnaccepted = !mSelectedConversation.getAcceptedCryptoTargets().containsAll(targets);
-		boolean hasUndecidedOwn = !axolotlService.getKeysWithTrust(XmppAxolotlSession.Trust.UNDECIDED).isEmpty();
-		boolean hasUndecidedContacts = !axolotlService.getKeysWithTrust(XmppAxolotlSession.Trust.UNDECIDED, targets).isEmpty();
+		boolean hasUndecidedOwn = !axolotlService.getKeysWithTrust(FingerprintStatus.createActiveUndecided()).isEmpty();
+		boolean hasUndecidedContacts = !axolotlService.getKeysWithTrust(FingerprintStatus.createActiveUndecided(), targets).isEmpty();
 		boolean hasPendingKeys = !axolotlService.findDevicesWithoutSession(mSelectedConversation).isEmpty();
 		boolean hasNoTrustedKeys = axolotlService.anyTargetHasNoTrustedKeys(targets);
 		if(hasUndecidedOwn || hasUndecidedContacts || hasPendingKeys || hasNoTrustedKeys || hasUnaccepted) {

@@ -42,7 +42,7 @@ import java.util.regex.Pattern;
 
 import in.gndec.sunehag.Config;
 import in.gndec.sunehag.R;
-import in.gndec.sunehag.crypto.axolotl.XmppAxolotlSession;
+import in.gndec.sunehag.crypto.axolotl.FingerprintStatus;
 import in.gndec.sunehag.entities.Account;
 import in.gndec.sunehag.entities.Conversation;
 import in.gndec.sunehag.entities.DownloadableFile;
@@ -57,8 +57,6 @@ import in.gndec.sunehag.ui.widget.ListSelectionManager;
 import in.gndec.sunehag.utils.CryptoHelper;
 import in.gndec.sunehag.utils.GeoHelper;
 import in.gndec.sunehag.utils.UIHelper;
-
-
 
 public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextView.CopyHandler {
 
@@ -203,11 +201,11 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			viewHolder.indicator.setImageResource(darkBackground ? R.drawable.ic_lock_white_18dp : R.drawable.ic_lock_black_18dp);
 			viewHolder.indicator.setVisibility(View.VISIBLE);
 			if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL) {
-				XmppAxolotlSession.Trust trust = message.getConversation()
+				FingerprintStatus status = message.getConversation()
 						.getAccount().getAxolotlService().getFingerprintTrust(
 								message.getFingerprint());
 
-				if(trust == null || (!trust.trusted() && !trust.trustedInactive())) {
+				if(status == null || (!status.isTrustedAndActive())) {
 					viewHolder.indicator.setColorFilter(activity.getWarningTextColor());
 					viewHolder.indicator.setAlpha(1.0f);
 				} else {

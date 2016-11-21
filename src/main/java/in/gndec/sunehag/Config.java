@@ -40,7 +40,7 @@ public final class Config {
 	public static final String BUG_REPORTS = "sunehag@YOURHOSTNAME";
 
 	//FIXME: Change "YOUR DOMAIN" to the domain name at which you want to run this app
-	public static final String DOMAIN_LOCK = "YOUR DOMAIN"; //only allow account connection for this domain
+	public static final String DOMAIN_LOCK = "lab.gdy.club"; //only allow account connection for this domain
 
 	//FIXME: Change "YOUR PASSWORD RECOVERY PAGE" to the domain name at which you want to run this app
 	public static final String FORGOT_PASSWORD_URL = "http://YOUR PASSWORD RECOVERY PAGE"; //URL to password recovery page (web page)
@@ -108,8 +108,8 @@ public final class Config {
 	public static final long MAM_MAX_CATCHUP =  MILLISECONDS_IN_DAY / 2;
 	public static final int MAM_MAX_MESSAGES = 500;
 
-	public static final long FREQUENT_RESTARTS_DETECTION_WINDOW = 8 * 60 * 60 * 1000; // 10 hours
-	public static final long FREQUENT_RESTARTS_THRESHOLD = 8;
+	public static final long FREQUENT_RESTARTS_DETECTION_WINDOW = 12 * 60 * 60 * 1000; // 10 hours
+	public static final long FREQUENT_RESTARTS_THRESHOLD = 16;
 
 	public static final ChatState DEFAULT_CHATSTATE = ChatState.ACTIVE;
 	public static final int TYPING_TIMEOUT = 8;

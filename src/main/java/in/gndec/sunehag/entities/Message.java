@@ -8,7 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import in.gndec.sunehag.Config;
-import in.gndec.sunehag.crypto.axolotl.XmppAxolotlSession;
+import in.gndec.sunehag.crypto.axolotl.FingerprintStatus;
 import in.gndec.sunehag.utils.CryptoHelper;
 import in.gndec.sunehag.utils.GeoHelper;
 import in.gndec.sunehag.utils.MimeUtils;
@@ -811,8 +811,8 @@ public class Message extends AbstractEntity {
 	}
 
 	public boolean isTrusted() {
-		XmppAxolotlSession.Trust t = conversation.getAccount().getAxolotlService().getFingerprintTrust(axolotlFingerprint);
-		return t != null && t.trusted();
+		FingerprintStatus s = conversation.getAccount().getAxolotlService().getFingerprintTrust(axolotlFingerprint);
+		return s != null && s.isTrustedAndActive();
 	}
 
 	private  int getPreviousEncryption() {
