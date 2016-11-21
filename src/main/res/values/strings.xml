@@ -129,13 +129,8 @@
 	<string name="error_decrypting_file">I/O Error decrypting file</string>
 	<string name="accept">Accept</string>
 	<string name="error">An error has occurred</string>
-<<<<<<< HEAD
 	<string name="pref_grant_presence_updates">Share your profile info</string>
 	<string name="pref_grant_presence_updates_summary">Let your contacts see your profile photo and your online presence</string>
-=======
-	<string name="pref_grant_presence_updates">Grant presence updates</string>
-	<string name="pref_grant_presence_updates_summary">Preemptively grant and request presence subscriptions for contacts you have created</string>
->>>>>>> 1c31b9692027269c8036908aee3df2cdf05369e0
 	<string name="subscriptions">Subscriptions</string>
 	<string name="your_account">Your account</string>
 	<string name="keys">Keys</string>
