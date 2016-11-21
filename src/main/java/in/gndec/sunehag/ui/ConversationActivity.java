@@ -1187,7 +1187,6 @@ public class ConversationActivity extends XmppActivity
 				} else if (Config.MAGIC_CREATE_DOMAIN != null) {
 					startActivity(new Intent(this, WelcomeActivity.class));
 				} else {
-					new StartupManager(this).setFirstTimeLaunch(true);
 					Intent editAccount = new Intent(this, EditAccountActivity.class);
 					editAccount.putExtra("init",true);
 					startActivity(editAccount);
