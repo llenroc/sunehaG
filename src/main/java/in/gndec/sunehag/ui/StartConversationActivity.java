@@ -64,7 +64,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import in.gndec.sunehag.Config;
 import in.gndec.sunehag.R;
 import in.gndec.sunehag.entities.Account;
-import in.gndec.sunehag.entities.Blockable;
 import in.gndec.sunehag.entities.Bookmark;
 import in.gndec.sunehag.entities.Contact;
 import in.gndec.sunehag.entities.Conversation;

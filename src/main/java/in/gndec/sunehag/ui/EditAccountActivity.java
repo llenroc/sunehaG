@@ -46,7 +46,6 @@ import in.gndec.sunehag.R;
 import in.gndec.sunehag.crypto.axolotl.AxolotlService;
 import in.gndec.sunehag.crypto.axolotl.XmppAxolotlSession;
 import in.gndec.sunehag.entities.Account;
-import in.gndec.sunehag.services.BarcodeProvider;
 import in.gndec.sunehag.services.XmppConnectionService;
 import in.gndec.sunehag.services.XmppConnectionService.OnAccountUpdate;
 import in.gndec.sunehag.services.XmppConnectionService.OnCaptchaRequested;
