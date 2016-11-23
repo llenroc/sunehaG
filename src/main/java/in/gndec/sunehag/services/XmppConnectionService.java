@@ -93,6 +93,7 @@ import in.gndec.sunehag.parser.MessageParser;
 import in.gndec.sunehag.parser.PresenceParser;
 import in.gndec.sunehag.persistance.DatabaseBackend;
 import in.gndec.sunehag.persistance.FileBackend;
+import in.gndec.sunehag.ui.SettingsActivity;
 import in.gndec.sunehag.ui.UiCallback;
 import in.gndec.sunehag.utils.ConversationsFileObserver;
 import in.gndec.sunehag.utils.CryptoHelper;
@@ -567,7 +568,7 @@ public class XmppConnectionService extends Service {
 					}
 					break;
 				case ACTION_DISABLE_FOREGROUND:
-					getPreferences().edit().putBoolean("keep_foreground_service", false).commit();
+					getPreferences().edit().putBoolean(SettingsActivity.KEEP_FOREGROUND_SERVICE, false).commit();
 					toggleForegroundService();
 					break;
 				case ACTION_DISMISS_ERROR_NOTIFICATIONS:
@@ -767,15 +768,15 @@ public class XmppConnectionService extends Service {
 	}
 
 	private boolean manuallyChangePresence() {
-		return getPreferences().getBoolean("manually_change_presence", false);
+		return getPreferences().getBoolean(SettingsActivity.MANUALLY_CHANGE_PRESENCE, false);
 	}
 
 	private boolean treatVibrateAsSilent() {
-		return getPreferences().getBoolean("treat_vibrate_as_silent", false);
+		return getPreferences().getBoolean(SettingsActivity.TREAT_VIBRATE_AS_SILENT, false);
 	}
 
 	private boolean awayWhenScreenOff() {
-		return getPreferences().getBoolean("away_when_screen_off", false);
+		return getPreferences().getBoolean(SettingsActivity.AWAY_WHEN_SCREEN_IS_OFF, false);
 	}
 
 	private String getCompressPicturesPreference() {
@@ -874,7 +875,7 @@ public class XmppConnectionService extends Service {
 		this.accounts = databaseBackend.getAccounts();
 
 		if (!keepForegroundService() && databaseBackend.startTimeCountExceedsThreshold()) {
-			getPreferences().edit().putBoolean("keep_foreground_service",true).commit();
+			getPreferences().edit().putBoolean(SettingsActivity.KEEP_FOREGROUND_SERVICE,true).commit();
 			Log.d(Config.LOGTAG,"number of restarts exceeds threshold. enabling foreground service");
 		}
 
@@ -963,7 +964,7 @@ public class XmppConnectionService extends Service {
 	}
 
 	private boolean keepForegroundService() {
-		return getPreferences().getBoolean("keep_foreground_service",false);
+		return getPreferences().getBoolean(SettingsActivity.KEEP_FOREGROUND_SERVICE,false);
 	}
 
 	@Override
@@ -978,7 +979,7 @@ public class XmppConnectionService extends Service {
 
 	private void logoutAndSave(boolean stop) {
 		int activeAccounts = 0;
-		databaseBackend.clearStartTimeCounter(); // regular swipes don't count towards restart counter
+		databaseBackend.clearStartTimeCounter(true); // regular swipes don't count towards restart counter
 		for (final Account account : accounts) {
 			if (account.getStatus() != Account.State.DISABLED) {
 				activeAccounts++;
@@ -3611,22 +3612,25 @@ public class XmppConnectionService extends Service {
 		mDatabaseExecutor.execute(new Runnable() {
 			@Override
 			public void run() {
-				databaseBackend.clearStartTimeCounter();
+				databaseBackend.clearStartTimeCounter(false);
 			}
 		});
 	}
 
-	public void verifyFingerprints(Contact contact, List<XmppUri.Fingerprint> fingerprints) {
+	public boolean verifyFingerprints(Contact contact, List<XmppUri.Fingerprint> fingerprints) {
 		boolean needsRosterWrite = false;
+		boolean performedVerification = false;
 		final AxolotlService axolotlService = contact.getAccount().getAxolotlService();
 		for(XmppUri.Fingerprint fp : fingerprints) {
 			if (fp.type == XmppUri.FingerprintType.OTR) {
-				needsRosterWrite |= contact.addOtrFingerprint(fp.fingerprint);
+				performedVerification |= contact.addOtrFingerprint(fp.fingerprint);
+				needsRosterWrite |= performedVerification;
 			} else if (fp.type == XmppUri.FingerprintType.OMEMO) {
 				String fingerprint = "05"+fp.fingerprint.replaceAll("\\s","");
 				FingerprintStatus fingerprintStatus = axolotlService.getFingerprintTrust(fingerprint);
 				if (fingerprintStatus != null) {
 					if (!fingerprintStatus.isVerified()) {
+						performedVerification = true;
 						axolotlService.setFingerprintTrust(fingerprint,fingerprintStatus.toVerified());
 					}
 				} else {
@@ -3637,6 +3641,7 @@ public class XmppConnectionService extends Service {
 		if (needsRosterWrite) {
 			syncRosterToDisk(contact.getAccount());
 		}
+		return performedVerification;
 	}
 
 	public boolean verifyFingerprints(Account account, List<XmppUri.Fingerprint> fingerprints) {

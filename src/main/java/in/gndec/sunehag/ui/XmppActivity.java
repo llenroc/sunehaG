@@ -53,20 +53,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.EncodeHintType;
-import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.QRCodeWriter;
-import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-
 import net.java.otr4j.session.SessionID;
 
 import java.io.FileNotFoundException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.RejectedExecutionException;
@@ -81,6 +73,7 @@ import in.gndec.sunehag.entities.Message;
 import in.gndec.sunehag.entities.MucOptions;
 import in.gndec.sunehag.entities.Presences;
 import in.gndec.sunehag.services.AvatarService;
+import in.gndec.sunehag.services.BarcodeProvider;
 import in.gndec.sunehag.services.XmppConnectionService;
 import in.gndec.sunehag.services.XmppConnectionService.XmppConnectionBinder;
 import in.gndec.sunehag.utils.CryptoHelper;
@@ -994,7 +987,7 @@ public abstract class XmppActivity extends Activity {
 	}
 
 	protected boolean manuallyChangePresence() {
-		return getPreferences().getBoolean("manually_change_presence", false);
+		return getPreferences().getBoolean(SettingsActivity.MANUALLY_CHANGE_PRESENCE, false);
 	}
 
 	protected void unregisterNdefPushMessageCallback() {
@@ -1062,38 +1055,13 @@ public abstract class XmppActivity extends Activity {
 			Point size = new Point();
 			getWindowManager().getDefaultDisplay().getSize(size);
 			final int width = (size.x < size.y ? size.x : size.y);
-			Bitmap bitmap = createQrCodeBitmap(uri, width);
+			Bitmap bitmap = BarcodeProvider.createAztecBitmap(uri, width);
 			ImageView view = new ImageView(this);
 			view.setBackgroundColor(Color.WHITE);
 			view.setImageBitmap(bitmap);
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setView(view);
 			builder.create().show();
-		}
-	}
-
-	protected Bitmap createQrCodeBitmap(String input, int size) {
-		Log.d(Config.LOGTAG,"qr code requested size: "+size);
-		try {
-			final QRCodeWriter QR_CODE_WRITER = new QRCodeWriter();
-			final Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
-			hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.M);
-			final BitMatrix result = QR_CODE_WRITER.encode(input, BarcodeFormat.QR_CODE, size, size, hints);
-			final int width = result.getWidth();
-			final int height = result.getHeight();
-			final int[] pixels = new int[width * height];
-			for (int y = 0; y < height; y++) {
-				final int offset = y * width;
-				for (int x = 0; x < width; x++) {
-					pixels[offset + x] = result.get(x, y) ? Color.BLACK : Color.TRANSPARENT;
-				}
-			}
-			final Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-			Log.d(Config.LOGTAG,"output size: "+width+"x"+height);
-			bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
-			return bitmap;
-		} catch (final WriterException e) {
-			return null;
 		}
 	}
 

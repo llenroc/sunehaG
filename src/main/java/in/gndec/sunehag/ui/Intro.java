@@ -107,7 +107,7 @@ public class Intro extends Activity {
             if (position == layouts.length - 1) {
                 // last page. make button text to GOT IT
                 buttonNext.setText(getString(R.string.iAgree));
-                buttonSkip.setText(getString(R.string.iDontAngree));
+                buttonSkip.setText(getString(R.string.iDoNotAgree));
             } else {
                 // still pages are left
                 buttonNext.setText(getString(R.string.next));
