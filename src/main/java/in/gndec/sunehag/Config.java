@@ -47,6 +47,11 @@ public final class Config {
 
 	//FIXME: Change "YOUR CHANGE PASSWORD PAGE" to the domain name at which you want to run this app
 	public static final String CHANGE_PASSWORD_URL = "http://YOUR CHANGE PASSWORD PAGE"; // URL to change password page (web page)
+
+	//FIXME: Custom DNS for the app
+	public static final boolean ALLOW_CUSTOM_DNS = false;
+	public static final byte[] ipAddress = new byte[]{8,8,8,8}; //Enter Your custom DNS Server (Default is 8.8.8.8)
+
 	public static final String MAGIC_CREATE_DOMAIN = null;
 	public static final boolean DISALLOW_REGISTRATION_IN_UI = true; //hide the register checkbox
 
