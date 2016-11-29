@@ -2,7 +2,7 @@
 
 ####Version 0.7
 * Custom DNS Server added
-* License Agreement Added
+* Terms and Conditions Added
 * Automatically deactivate own devices after 7 day of inactivity
 * Improvements fo doze/push mode
 * Share button added to account details
