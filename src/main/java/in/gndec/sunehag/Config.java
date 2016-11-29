@@ -47,6 +47,11 @@ public final class Config {
 
 	//FIXME: Change "YOUR CHANGE PASSWORD PAGE" to the domain name at which you want to run this app
 	public static final String CHANGE_PASSWORD_URL = "http://YOUR CHANGE PASSWORD PAGE"; // URL to change password page (web page)
+
+	//FIXME: Custom DNS for the app
+	public static final boolean ALLOW_CUSTOM_DNS = false;
+	public static final byte[] ipAddress = new byte[]{8,8,8,8}; //Enter Your custom DNS Server (Default is 8.8.8.8)
+
 	public static final String MAGIC_CREATE_DOMAIN = null;
 	public static final boolean DISALLOW_REGISTRATION_IN_UI = true; //hide the register checkbox
 
@@ -85,6 +90,10 @@ public final class Config {
 
 	public static final int MAX_DISPLAY_MESSAGE_CHARS = 4096;
 
+	public static final long MILLISECONDS_IN_DAY = 24 * 60 * 60 * 1000;
+
+	public static final long OMEMO_AUTO_EXPIRY = 7 * MILLISECONDS_IN_DAY;
+
 	public static final boolean DISABLE_PROXY_LOOKUP = false; //useful to debug ibb
 	public static final boolean DISABLE_HTTP_UPLOAD = false;
 	public static final boolean DISABLE_STRING_PREP = false; // setting to true might increase startup performance
@@ -104,12 +113,11 @@ public final class Config {
 
 	public static final boolean PARSE_REAL_JID_FROM_MUC_MAM = false; //dangerous if server doesn’t filter
 
-	public static final long MILLISECONDS_IN_DAY = 24 * 60 * 60 * 1000;
 	public static final long MAM_MAX_CATCHUP =  MILLISECONDS_IN_DAY / 2;
 	public static final int MAM_MAX_MESSAGES = 500;
 
-	public static final long FREQUENT_RESTARTS_DETECTION_WINDOW = 8 * 60 * 60 * 1000; // 10 hours
-	public static final long FREQUENT_RESTARTS_THRESHOLD = 8;
+	public static final long FREQUENT_RESTARTS_DETECTION_WINDOW = 12 * 60 * 60 * 1000; // 10 hours
+	public static final long FREQUENT_RESTARTS_THRESHOLD = 16;
 
 	public static final ChatState DEFAULT_CHATSTATE = ChatState.ACTIVE;
 	public static final int TYPING_TIMEOUT = 8;

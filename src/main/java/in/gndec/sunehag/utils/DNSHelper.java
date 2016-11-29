@@ -54,6 +54,10 @@ public class DNSHelper {
 		DNSHelper.context = context;
         final String host = jid.getDomainpart();
 		final List<InetAddress> servers = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? getDnsServers(context) : getDnsServersPreLollipop();
+		if (Config.ALLOW_CUSTOM_DNS) {
+			servers.add(0,InetAddress.getByAddress(Config.ipAddress));
+		}
+		Log.v(Config.LOGTAG,"Server List "+servers);
 		Bundle b = new Bundle();
 		boolean interrupted = false;
 		for(InetAddress server : servers) {

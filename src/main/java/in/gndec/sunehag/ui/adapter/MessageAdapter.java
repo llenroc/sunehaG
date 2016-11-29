@@ -42,7 +42,7 @@ import java.util.regex.Pattern;
 
 import in.gndec.sunehag.Config;
 import in.gndec.sunehag.R;
-import in.gndec.sunehag.crypto.axolotl.XmppAxolotlSession;
+import in.gndec.sunehag.crypto.axolotl.FingerprintStatus;
 import in.gndec.sunehag.entities.Account;
 import in.gndec.sunehag.entities.Conversation;
 import in.gndec.sunehag.entities.DownloadableFile;
@@ -57,8 +57,6 @@ import in.gndec.sunehag.ui.widget.ListSelectionManager;
 import in.gndec.sunehag.utils.CryptoHelper;
 import in.gndec.sunehag.utils.GeoHelper;
 import in.gndec.sunehag.utils.UIHelper;
-
-
 
 public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextView.CopyHandler {
 
@@ -127,7 +125,7 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 		}
 	}
 
-	private void displayStatus(ViewHolder viewHolder, Message message, int type, boolean darkBackground) {
+	private void displayStatus(ViewHolder viewHolder, Message message, int type, boolean darkBackground, boolean inValidSession) {
 		String filesize = null;
 		String info = null;
 		boolean error = false;
@@ -203,12 +201,12 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			viewHolder.indicator.setImageResource(darkBackground ? R.drawable.ic_lock_white_18dp : R.drawable.ic_lock_black_18dp);
 			viewHolder.indicator.setVisibility(View.VISIBLE);
 			if (message.getEncryption() == Message.ENCRYPTION_AXOLOTL) {
-				XmppAxolotlSession.Trust trust = message.getConversation()
+				FingerprintStatus status = message.getConversation()
 						.getAccount().getAxolotlService().getFingerprintTrust(
 								message.getFingerprint());
 
-				if(trust == null || (!trust.trusted() && !trust.trustedInactive())) {
-					viewHolder.indicator.setColorFilter(activity.getWarningTextColor());
+				if(status == null || (type == SENT ? !status.isTrusted() : (!status.isVerified() && inValidSession))) {
+					viewHolder.indicator.setColorFilter(0xffc64545);
 					viewHolder.indicator.setAlpha(1.0f);
 				} else {
 					viewHolder.indicator.clearColorFilter();
@@ -464,7 +462,8 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 	@Override
 	public View getView(int position, View view, ViewGroup parent) {
 		final Message message = getItem(position);
-		final boolean isInValidSession = message.isValidInSession();
+		final boolean omemoEncryption = message.getEncryption() == Message.ENCRYPTION_AXOLOTL;
+		final boolean isInValidSession = message.isValidInSession() && (!omemoEncryption || message.isTrusted());
 		final Conversation conversation = message.getConversation();
 		final Account account = conversation.getAccount();
 		final int type = getItemViewType(position);
@@ -670,11 +669,15 @@ public class MessageAdapter extends ArrayAdapter<Message> implements CopyTextVie
 			} else {
 				viewHolder.message_box.setBackgroundResource(R.drawable.message_bubble_received_warning);
 				viewHolder.encryption.setVisibility(View.VISIBLE);
-				viewHolder.encryption.setText(CryptoHelper.encryptionTypeToText(message.getEncryption()));
+				if (omemoEncryption && !message.isTrusted()) {
+					viewHolder.encryption.setText(R.string.not_trusted);
+				} else {
+					viewHolder.encryption.setText(CryptoHelper.encryptionTypeToText(message.getEncryption()));
+				}
 			}
 		}
 
-		displayStatus(viewHolder, message, type, darkBackground);
+		displayStatus(viewHolder, message, type, darkBackground, isInValidSession);
 
 		return view;
 	}

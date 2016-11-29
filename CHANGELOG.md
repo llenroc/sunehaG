@@ -1,5 +1,14 @@
 ###Changelog
 
+####Version 0.7
+* Custom DNS Server added
+* License Agreement Added
+* Automatically deactivate own devices after 7 day of inactivity
+* Improvements fo doze/push mode
+* Share button added to account details
+* Use 2D Barcode (Aztec Code) instead of QR Code
+* Minor Changes and bug fixes
+
 ####Version 0.6
 * Share contact details via QR code
 * Groups with empty subject are now allowed

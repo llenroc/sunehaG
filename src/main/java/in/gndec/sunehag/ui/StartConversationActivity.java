@@ -64,7 +64,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import in.gndec.sunehag.Config;
 import in.gndec.sunehag.R;
 import in.gndec.sunehag.entities.Account;
-import in.gndec.sunehag.entities.Blockable;
 import in.gndec.sunehag.entities.Bookmark;
 import in.gndec.sunehag.entities.Contact;
 import in.gndec.sunehag.entities.Conversation;
@@ -395,13 +394,11 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
     }
 
     @SuppressLint("InflateParams")
-    protected void showCreateContactDialog(final String prefilledJid, final String fingerprint) {
+    protected void showCreateContactDialog(final String prefilledJid, final Invite invite) {
         EnterJidDialog dialog = new EnterJidDialog(
                 this, mKnownHosts, mActivatedAccounts,
-                getString(R.string.add_contact), getString(R.string.ADD),
-                prefilledJid, null, fingerprint == null
-        );
-
+                getString(R.string.create_contact), getString(R.string.create),
+                prefilledJid, null, invite == null || !invite.hasFingerprints());
         dialog.setOnEnterJidDialogPositiveListener(new EnterJidDialog.OnEnterJidDialogPositiveListener() {
             @Override
             public boolean onEnterJidDialogPositive(Jid accountJid, Jid contactJid) throws EnterJidDialog.JidError {
@@ -418,11 +415,11 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
                 if (contact.showInRoster()) {
                     throw new EnterJidDialog.JidError(getString(R.string.contact_already_exists));
                 } else {
-                    contact.addOtrFingerprint(fingerprint);
                     xmppConnectionService.createContact(contact);
-                    contact.setServerName(contactJid.getUserName());
-                    xmppConnectionService.pushContactToServer(contact);
-                    switchToConversation(contact);
+                    if (invite != null && invite.hasFingerprints()) {
+                        xmppConnectionService.verifyFingerprints(contact,invite.getFingerprints());
+                    }
+                    switchToConversation(contact, invite == null ? null : invite.getBody());
                     return true;
                 }
             }
@@ -564,11 +561,11 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
         return xmppConnectionService.findAccountByJid(jid);
     }
 
-    protected void switchToConversation(Contact contact) {
+    protected void switchToConversation(Contact contact, String body) {
         Conversation conversation = xmppConnectionService
                 .findOrCreateConversation(contact.getAccount(),
                         contact.getJid(), false);
-        switchToConversation(conversation);
+        switchToConversation(conversation, body, false);
     }
 
     public static void populateAccountSpinner(Context context, List<String> accounts, Spinner spinner) {
@@ -627,7 +624,7 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
                 showCreateConferenceDialog();
                 return true;
             case R.id.action_scan_qr_code:
-                new IntentIntegrator(this).initiateScan();
+                new IntentIntegrator(this).initiateScan(Arrays.asList("AZTEC","QR_CODE"));
                 return true;
             case R.id.action_hide_offline:
                 mHideOfflineContacts = !item.isChecked();
@@ -845,28 +842,33 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
     }
 
     private boolean handleJid(Invite invite) {
+        Account account = xmppConnectionService.findAccountByJid(invite.getJid());
+        if (account != null && !account.isOptionSet(Account.OPTION_DISABLED) && invite.hasFingerprints()) {
+            if (xmppConnectionService.verifyFingerprints(account,invite.getFingerprints())) {
+                switchToAccount(account);
+                finish();
+                return true;
+            }
+        }
         List<Contact> contacts = xmppConnectionService.findContacts(invite.getJid());
         if (invite.isMuc()) {
             Conversation muc = xmppConnectionService.findFirstMuc(invite.getJid());
             if (muc != null) {
-                switchToConversation(muc);
+                switchToConversation(muc,invite.getBody(),false);
                 return true;
             } else {
                 showJoinConferenceDialog(invite.getJid().toBareJid().toString());
                 return false;
             }
         } else if (contacts.size() == 0) {
-            showCreateContactDialog(invite.getJid().toString(), invite.getFingerprint());
+            showCreateContactDialog(invite.getJid().toString(), invite);
             return false;
         } else if (contacts.size() == 1) {
             Contact contact = contacts.get(0);
-            if (invite.getFingerprint() != null) {
-                if (contact.addOtrFingerprint(invite.getFingerprint())) {
-                    Log.d(Config.LOGTAG, "added new fingerprint");
-                    xmppConnectionService.syncRosterToDisk(contact.getAccount());
-                }
+            if (invite.hasFingerprints()) {
+                xmppConnectionService.verifyFingerprints(contact,invite.getFingerprints());
             }
-            switchToConversation(contact);
+            switchToConversation(contact,invite.getBody());
             return true;
         } else {
             if (mMenuSearchView != null) {
@@ -1052,10 +1054,14 @@ public class StartConversationActivity extends XmppActivity implements OnRosterU
                 activity.conference_context_id = acmi.position;
             } else if (mResContextMenu == R.menu.contact_context) {
                 activity.contact_context_id = acmi.position;
-                final Blockable contact = (Contact) activity.contacts.get(acmi.position);
+                final Contact contact = (Contact) activity.contacts.get(acmi.position);
                 final MenuItem blockUnblockItem = menu.findItem(R.id.context_contact_block_unblock);
+                final MenuItem showContactDetailsItem = menu.findItem(R.id.context_contact_details);
+                if (contact.isSelf()) {
+                    showContactDetailsItem.setVisible(false);
+                }
                 XmppConnection xmpp = contact.getAccount().getXmppConnection();
-                if (xmpp != null && xmpp.getFeatures().blocking()) {
+                if (xmpp != null && xmpp.getFeatures().blocking() && !contact.isSelf()) {
                     if (contact.isBlocked()) {
                         blockUnblockItem.setTitle(R.string.unblock_contact);
                     } else {
