@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,9 +104,16 @@ public class Intro extends Activity {
         public void onPageSelected(int position) {
             addBottomDots(position);
 
-            // changing the next button text 'NEXT' / 'GOT IT'
+            // changing the next button text 'NEXT' / 'I Agree'
             if (position == layouts.length - 1) {
-                // last page. make button text to GOT IT
+                TextView textView = (TextView) findViewById(R.id.TnC_textView);
+                Spanned formattedString;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                    formattedString = Html.fromHtml(getString(R.string.terms_and_conditions),Html.FROM_HTML_MODE_LEGACY);
+                } else {
+                    formattedString = Html.fromHtml(getString(R.string.terms_and_conditions));
+                }
+                textView.setText(formattedString);
                 buttonNext.setText(getString(R.string.iAgree));
                 buttonSkip.setText(getString(R.string.iDoNotAgree));
             } else {
