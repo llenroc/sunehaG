@@ -2,6 +2,7 @@ package in.gndec.sunehag;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.MenuItem;
@@ -12,28 +13,52 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
 import java.security.cert.X509Certificate;
+import java.util.Arrays;
 
 import in.gndec.sunehag.crypto.axolotl.FingerprintStatus;
 import in.gndec.sunehag.crypto.axolotl.XmppAxolotlSession;
 import in.gndec.sunehag.entities.Account;
+import in.gndec.sunehag.ui.TrustKeysActivity;
 import in.gndec.sunehag.ui.XmppActivity;
 import in.gndec.sunehag.ui.widget.Switch;
 import in.gndec.sunehag.utils.CryptoHelper;
-
+import in.gndec.sunehag.utils.XmppUri;
 
 public abstract class OmemoActivity extends XmppActivity {
 
     private Account mSelectedAccount;
     private String mSelectedFingerprint;
 
+    protected XmppUri mPendingFingerprintVerificationUri = null;
+
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu,v,menuInfo);
         Object account = v.getTag(R.id.TAG_ACCOUNT);
         Object fingerprint = v.getTag(R.id.TAG_FINGERPRINT);
-        if (account != null && fingerprint != null && account instanceof Account && fingerprint instanceof String) {
+        Object fingerprintStatus = v.getTag(R.id.TAG_FINGERPRINT_STATUS);;
+        if (account != null
+                && fingerprint != null
+                && account instanceof Account
+                && fingerprintStatus != null
+                && fingerprint instanceof String
+                && fingerprintStatus instanceof FingerprintStatus) {
             getMenuInflater().inflate(R.menu.omemo_key_context, menu);
+            MenuItem purgeItem = menu.findItem(R.id.purge_omemo_key);
+            MenuItem verifyScan = menu.findItem(R.id.verify_scan);
+            if (this instanceof TrustKeysActivity) {
+                purgeItem.setVisible(false);
+                verifyScan.setVisible(false);
+            } else {
+                FingerprintStatus status = (FingerprintStatus) fingerprintStatus;
+                if (!status.isActive() || status.isVerified()) {
+                    verifyScan.setVisible(false);
+                }
+            }
             this.mSelectedAccount = (Account) account;
             this.mSelectedFingerprint = (String) fingerprint;
         }
@@ -48,9 +73,28 @@ public abstract class OmemoActivity extends XmppActivity {
             case R.id.copy_omemo_key:
                 copyOmemoFingerprint(mSelectedFingerprint);
                 break;
+            case R.id.verify_scan:
+                new IntentIntegrator(this).initiateScan(Arrays.asList("AZTEC","QR_CODE"));
+                break;
         }
         return true;
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        if (scanResult != null && scanResult.getFormatName() != null) {
+            String data = scanResult.getContents();
+            XmppUri uri = new XmppUri(data);
+            if (xmppConnectionServiceBound) {
+                processFingerprintVerification(uri);
+            } else {
+                this.mPendingFingerprintVerificationUri =uri;
+            }
+        }
+    }
+
+    protected abstract void processFingerprintVerification(XmppUri uri);
 
     protected void copyOmemoFingerprint(String fingerprint) {
         if (copyTextToClipboard(CryptoHelper.prettifyFingerprint(fingerprint.substring(2)), R.string.omemo_fingerprint)) {
@@ -106,6 +150,7 @@ public abstract class OmemoActivity extends XmppActivity {
         registerForContextMenu(view);
         view.setTag(R.id.TAG_ACCOUNT,account);
         view.setTag(R.id.TAG_FINGERPRINT,fingerprint);
+        view.setTag(R.id.TAG_FINGERPRINT_STATUS,status);
         boolean x509 = Config.X509_VERIFICATION && status.getTrust() == FingerprintStatus.Trust.VERIFIED_X509;
         final View.OnClickListener toast;
         trustToggle.setChecked(status.isTrusted(), false);

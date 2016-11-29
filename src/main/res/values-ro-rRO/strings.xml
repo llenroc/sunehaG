@@ -339,8 +339,8 @@
   <string name="url_copied_to_clipboard">URL copiat in memorie</string>
   <string name="message_copied_to_clipboard">Mesaj copiat in memorie</string>
   <string name="image_transmission_failed">Transmisia imaginii a esuat</string>
-  <string name="scan_qr_code">Scaneaza cod QR</string>
-  <string name="show_qr_code">Arata codul QR</string>
+  <string name="scan_qr_code">Scaneaza cod de bare 2D</string>
+  <string name="show_qr_code">Arata cod de bare 2D</string>
   <string name="show_block_list">Arata lista blocata</string>
   <string name="account_details">Detalii cont</string>
   <string name="verify_otr">Verifica OTR</string>
@@ -670,4 +670,18 @@ Emitent</string>
   <string name="data_saver_enabled">Economizorul de date este activat</string>
   <string name="data_saver_enabled_explained">Sistemul de operare restrictioneaza accesul la Internet pentru Conversations atunci cand este in fundal. Pentru a primi in continuare notificari de mesaje noi trebuie sa acordati acces ne restrictionat pentru Conversations atunci cand Economizorul de date este activ.\nConversations totusi face eforturi sa economiseasca datele atunci cand este posibil.</string>
   <string name="device_does_not_support_data_saver">Dispozitivul nu suporta dezactivarea Economizorului de date pentru Conversations.</string>
+  <string name="error_unable_to_create_temporary_file">Nu se poate crea un fisier temporar</string>
+  <string name="this_device_has_been_verified">Acest dispozitiv a fost verificat</string>
+  <string name="copy_fingerprint">Copiaza amprenta</string>
+  <string name="all_omemo_keys_have_been_verified">Toate cheile OMEMO au fost verificate</string>
+  <string name="barcode_does_not_contain_fingerprints_for_this_conversation">Codul de bare nu contine amprente pentru aceasta conversatie.</string>
+  <string name="verified_fingerprints">Amprente verificate</string>
+  <string name="use_camera_icon_to_scan_barcode">Foloseste camera pentru a scana codul de bare al contactului</string>
+  <string name="please_wait_for_keys_to_be_fetched">Asteptati cat se preiau cheile</string>
+  <string name="share_as_barcode">Partajeaza un cod de bare</string>
+  <string name="share_as_uri">Partajeaza ca adresa XMPP</string>
+  <string name="share_as_http">Partajeaza ca legatura HTTP</string>
+  <string name="pref_blind_trust_before_verification">Incredere Oarba Inainte de Verificare</string>
+  <string name="blindly_trusted_omemo_keys">Incredere oarba in aceste chei OMEMO</string>
+  <string name="not_trusted">De neincredere</string>
 </resources>

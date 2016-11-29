@@ -26,6 +26,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.QuickContactBadge;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.wefika.flowlayout.FlowLayout;
 
@@ -46,6 +47,7 @@ import in.gndec.sunehag.services.XmppConnectionService.OnAccountUpdate;
 import in.gndec.sunehag.services.XmppConnectionService.OnRosterUpdate;
 import in.gndec.sunehag.utils.CryptoHelper;
 import in.gndec.sunehag.utils.UIHelper;
+import in.gndec.sunehag.utils.XmppUri;
 import in.gndec.sunehag.xmpp.OnKeyStatusUpdated;
 import in.gndec.sunehag.xmpp.OnUpdateBlocklist;
 import in.gndec.sunehag.xmpp.XmppConnection;
@@ -528,13 +530,16 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 	}
 
 	public void onBackendConnected() {
-		if ((accountJid != null) && (contactJid != null)) {
-			Account account = xmppConnectionService
-				.findAccountByJid(accountJid);
+		if (accountJid != null && contactJid != null) {
+			Account account = xmppConnectionService.findAccountByJid(accountJid);
 			if (account == null) {
 				return;
 			}
 			this.contact = account.getRoster().getContact(contactJid);
+			if (mPendingFingerprintVerificationUri != null) {
+				processFingerprintVerification(mPendingFingerprintVerificationUri);
+				mPendingFingerprintVerificationUri = null;
+			}
 			populateView();
 		}
 	}
@@ -542,5 +547,16 @@ public class ContactDetailsActivity extends OmemoActivity implements OnAccountUp
 	@Override
 	public void onKeyStatusUpdated(AxolotlService.FetchStatus report) {
 		refreshUi();
+	}
+
+	@Override
+	protected void processFingerprintVerification(XmppUri uri) {
+		if (contact != null && contact.getJid().toBareJid().equals(uri.getJid()) && uri.hasFingerprints()) {
+			if (xmppConnectionService.verifyFingerprints(contact,uri.getFingerprints())) {
+				Toast.makeText(this,R.string.verified_fingerprints,Toast.LENGTH_SHORT).show();
+			}
+		} else {
+			Toast.makeText(this,R.string.invalid_barcode,Toast.LENGTH_SHORT).show();
+		}
 	}
 }

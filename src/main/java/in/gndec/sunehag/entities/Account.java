@@ -340,6 +340,10 @@ public class Account extends AbstractEntity {
 		}
 	}
 
+	public State getTrueStatus() {
+		return this.status;
+	}
+
 	public void setStatus(final State status) {
 		this.status = status;
 	}

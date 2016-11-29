@@ -492,7 +492,7 @@ public class Message extends AbstractEntity {
 						!this.getBody().startsWith(ME_COMMAND) &&
 						!this.bodyIsHeart() &&
 						!message.bodyIsHeart() &&
-						this.isTrusted() == message.isTrusted()
+						((this.axolotlFingerprint == null && message.axolotlFingerprint == null) || this.axolotlFingerprint.equals(message.getFingerprint()))
 				);
 	}
 
@@ -812,7 +812,7 @@ public class Message extends AbstractEntity {
 
 	public boolean isTrusted() {
 		FingerprintStatus s = conversation.getAccount().getAxolotlService().getFingerprintTrust(axolotlFingerprint);
-		return s != null && s.isTrustedAndActive();
+		return s != null && s.isTrusted();
 	}
 
 	private  int getPreviousEncryption() {

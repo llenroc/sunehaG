@@ -52,6 +52,7 @@ import in.gndec.sunehag.services.XmppConnectionService.OnCaptchaRequested;
 import in.gndec.sunehag.ui.adapter.KnownHostsAdapter;
 import in.gndec.sunehag.utils.CryptoHelper;
 import in.gndec.sunehag.utils.UIHelper;
+import in.gndec.sunehag.utils.XmppUri;
 import in.gndec.sunehag.xml.Element;
 import in.gndec.sunehag.xmpp.OnKeyStatusUpdated;
 import in.gndec.sunehag.xmpp.XmppConnection;
@@ -381,10 +382,21 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == REQUEST_BATTERY_OP || requestCode == REQUEST_DATA_SAVER) {
 			updateAccountInformation(mAccount == null);
+		}
+	}
+
+	@Override
+	protected void processFingerprintVerification(XmppUri uri) {
+		if (mAccount != null && mAccount.getJid().toBareJid().equals(uri.getJid()) && uri.hasFingerprints()) {
+			if (xmppConnectionService.verifyFingerprints(mAccount,uri.getFingerprints())) {
+				Toast.makeText(this,R.string.verified_fingerprints,Toast.LENGTH_SHORT).show();
+			}
+		} else {
+			Toast.makeText(this,R.string.invalid_barcode,Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -680,6 +692,10 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 				if (this.mInitMode) {
 					this.mPassword.requestFocus();
 				}
+			}
+			if (mPendingFingerprintVerificationUri != null) {
+				processFingerprintVerification(mPendingFingerprintVerificationUri);
+				mPendingFingerprintVerificationUri = null;
 			}
 			updateAccountInformation(init);
 		}
