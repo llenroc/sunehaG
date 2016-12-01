@@ -34,6 +34,7 @@ import in.gndec.sunehag.entities.Conversation;
 import in.gndec.sunehag.entities.Message;
 import in.gndec.sunehag.ui.ConversationActivity;
 import in.gndec.sunehag.ui.ManageAccountActivity;
+import in.gndec.sunehag.ui.SettingsActivity;
 import in.gndec.sunehag.ui.TimePreference;
 import in.gndec.sunehag.utils.GeoHelper;
 import in.gndec.sunehag.utils.UIHelper;
@@ -591,7 +592,7 @@ public class NotificationService {
 				errors.add(account);
 			}
 		}
-		if (mXmppConnectionService.getPreferences().getBoolean("keep_foreground_service", false)) {
+		if (mXmppConnectionService.getPreferences().getBoolean(SettingsActivity.KEEP_FOREGROUND_SERVICE, false)) {
 			notificationManager.notify(FOREGROUND_NOTIFICATION_ID, createForegroundNotification());
 		}
 		final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mXmppConnectionService);
