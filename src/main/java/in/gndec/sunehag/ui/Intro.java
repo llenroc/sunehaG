@@ -1,7 +1,9 @@
 package in.gndec.sunehag.ui;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
@@ -54,7 +56,21 @@ public class Intro extends Activity {
             @Override
             public void onClick(View view) {
                 if (getItem(0) == layouts.length - 1){
-                    finish();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Intro.this);
+                    builder.setTitle("Notice");
+                    builder.setMessage(R.string.IDoNotAgreeMessage);
+                    builder.setPositiveButton("Exit", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            finish();
+                        }
+                    });
+                    builder.setNegativeButton("Back", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    });
+                    builder.show();
                 } else {
                     viewPager.setCurrentItem(layouts.length-1);
                 }
@@ -68,9 +84,23 @@ public class Intro extends Activity {
                 if (current < layouts.length) {
                     viewPager.setCurrentItem(current);
                 } else {
-                    manager.setFirstTimeLaunch(false);
-                    startActivity(new Intent(Intro.this, ConversationActivity.class));
-                    finish();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Intro.this);
+                    builder.setTitle("Confirmation");
+                    builder.setMessage(R.string.IAgreeMessage);
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            manager.setFirstTimeLaunch(false);
+                            startActivity(new Intent(Intro.this, ConversationActivity.class));
+                            finish();
+                        }
+                    });
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    });
+                    builder.show();
                 }
             }
         });

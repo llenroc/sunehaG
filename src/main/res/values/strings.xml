@@ -764,4 +764,6 @@
 	<string name="blindly_trusted_omemo_keys">Blindly trusted OMEMO keys</string>
 	<string name="not_trusted">Untrusted</string>
 	<string name="invalid_barcode">Invalid barcode</string>
+	<string name="IDoNotAgreeMessage">You must Accept the Terms and Conditions in order to you the application\n\nClick \"Back\" to read and Accept \nor\nClick \"Exit\" to exit the Application</string>
+	<string name="IAgreeMessage">I have read and agree to the Terms and Conditions</string>
 </resources>

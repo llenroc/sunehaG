@@ -741,7 +741,8 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 				changeMoreTableVisibility(!item.isChecked());
 				break;
 			case R.id.action_share:
-				shareLink(false);
+				if (!mInitMode)
+					shareLink(false);
 				break;
 			case R.id.action_change_password_on_server:
 				gotoLink(Config.CHANGE_PASSWORD_URL);
