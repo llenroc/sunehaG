@@ -1189,6 +1189,7 @@ public class ConversationActivity extends XmppActivity
 				} else {
 					Intent editAccount = new Intent(this, EditAccountActivity.class);
 					editAccount.putExtra("init",true);
+					editAccount.putExtra("shareIcon",false);
 					startActivity(editAccount);
 				}
 				finish();

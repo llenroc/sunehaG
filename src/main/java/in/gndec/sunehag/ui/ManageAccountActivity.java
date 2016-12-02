@@ -207,8 +207,9 @@ public class ManageAccountActivity extends XmppActivity implements OnAccountUpda
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.action_add_account:
-				startActivity(new Intent(getApplicationContext(),
-						EditAccountActivity.class));
+				final Intent intent = new Intent(getApplicationContext(), EditAccountActivity.class);
+				intent.putExtra("shareIcon",false);
+				startActivity(intent);
 				break;
 			case R.id.action_disable_all:
 				disableAllAccounts();

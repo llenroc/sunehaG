@@ -76,6 +76,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 	private TextView mDisableOsOptimizationsHeadline;
 	private TextView getmDisableOsOptimizationsBody;
 	private TableLayout mMoreTable;
+    private boolean Showshare=true;
 
 	private LinearLayout mStats;
 	private RelativeLayout mOsOptimizations;
@@ -581,7 +582,8 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 		final MenuItem renewCertificate = menu.findItem(R.id.action_renew_certificate);
 		final MenuItem mamPrefs = menu.findItem(R.id.action_mam_prefs);
 		final MenuItem changePresence = menu.findItem(R.id.action_change_presence);
-
+        final MenuItem share = menu.findItem(R.id.action_share);
+        share.setVisible(Showshare);
 		renewCertificate.setVisible(mAccount != null && mAccount.getPrivateKeyAlias() != null);
 
 		if (mAccount != null && mAccount.isOnlineAndConnected()) {
@@ -633,6 +635,7 @@ public class EditAccountActivity extends OmemoActivity implements OnAccountUpdat
 				this.jidToEdit = null;
 			}
 			boolean init = getIntent().getBooleanExtra("init", false);
+            Showshare =getIntent().getBooleanExtra("shareIcon",true);
 			this.mInitMode = init || this.jidToEdit == null;
 			this.messageFingerprint = getIntent().getStringExtra("fingerprint");
 			if (!mInitMode) {
